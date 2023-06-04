@@ -3,6 +3,9 @@ pipeline {
     tools {
         maven "maven3"
     }
+    environment {
+        VERSION = "${env.BUILD_ID}"
+    }
     stages {
         stage('static sonar analysis') {
             steps {
@@ -19,6 +22,19 @@ pipeline {
             steps {
                 script {
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonartoken'
+                }
+            }
+        }
+
+        stage('docker build & push to nexus') {
+            steps {
+                script {
+                    withCredentials([usernameColonPassword(credentialsId: 'nexuscred ', variable: 'nexus_cred')]) {
+                         sh '''
+                           docker build -t 3.128.171.117:8083/springapp:${VERSION} .
+                         '''
+                    }
+                   
                 }
             }
         }
