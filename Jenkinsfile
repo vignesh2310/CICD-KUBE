@@ -32,7 +32,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'nexuspass', variable: 'nexuspass')]) {
                          sh '''
                            docker build -t 3.128.171.117:8083/springapp:${VERSION} .
-                           docker login -u admin -p $nexuspass 3.128.171.117:8083
+                           docker login -u vignesh22310 -p Mark42@ps 3.128.171.117:8083
                            docker push 3.128.171.117:8083/springapp:${VERSION}
                          '''
                     }
