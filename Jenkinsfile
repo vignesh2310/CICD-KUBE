@@ -1,12 +1,10 @@
 pipeline {
     agent any 
+    tools {
+        maven "maven3"
+    }
     stages {
         stage('static sonar analysis') {
-            agent {
-                docker {
-                    image 'maven'
-                }
-            }
             steps {
                 script {
                   withSonarQubeEnv(credentialsId: 'sonartoken') {
